@@ -11,4 +11,9 @@ public class Line {
     private String text;
     private ArrayList<Translation> translations;
 
+    public Line(String vText){
+        text = vText;
+        translations = new ArrayList<>();
+    }
+
 }

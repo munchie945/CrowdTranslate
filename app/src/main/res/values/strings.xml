@@ -11,13 +11,14 @@
     <string name="translate_screen_title">Translate</string>
     <string name="profile_screen_title">Profile</string>
     <string name="start_project_screen_title">Start Project</string>
-    <string name="label_target_lang">Target Language</string>
-    <string name="label_difficulty">Difficulty</string>
+    <string name="label_target_lang">Target Language:</string>
+    <string name="label_difficulty">Difficulty:</string>
     <string name="easy_button">Easy</string>
     <string name="medium_button">Medium</string>
     <string name="hard_button">Hard</string>
-    <string name="label_tag">Tags</string>
-    <string name="label_source_lang">Source Language</string>
-    <string name="label_project">Project Name</string>
-    <string name="input_text">Text</string>
+    <string name="label_tag">Tags:</string>
+    <string name="label_source_lang">Source Language:</string>
+    <string name="label_project">Project Name:</string>
+    <string name="input_text">Text:</string>
+    <string name="label_lines">Lines:</string>
 </resources>

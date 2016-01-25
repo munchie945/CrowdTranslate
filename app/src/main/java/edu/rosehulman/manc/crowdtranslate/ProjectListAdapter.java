@@ -1,5 +1,7 @@
 package edu.rosehulman.manc.crowdtranslate;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,8 @@ import java.util.ArrayList;
 
 import edu.rosehulman.manc.crowdtranslate.model.Project;
 
+import static edu.rosehulman.manc.crowdtranslate.BrowseProjectsActivity.*;
+
 /**
  * Created by manc on 1/18/2016.
  */
@@ -17,7 +21,10 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
     private final ArrayList<Project> mProjectList;
 
-    public ProjectListAdapter(){
+    private BrowseProjectsActivity mContext;
+
+    public ProjectListAdapter(BrowseProjectsActivity context){
+        mContext = context;
         mProjectList = new ArrayList();
 
         // TODO: only for testing; replace with methods to actually get projects
@@ -34,12 +41,20 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Project project = mProjectList.get(position);
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+        final Project project = mProjectList.get(position);
         holder.titleView.setText(project.getName());
         holder.sourceLanguageView.setText(project.getSourceLang());
         holder.targetLanguageView.setText(project.getDestLang());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mContext.displayInfo(project, position);
+
+            }
+        });
     }
+
 
     @Override
     public int getItemCount() {
@@ -64,6 +79,10 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     }
     public void addProject(Project project){
         mProjectList.add(project);
+        notifyDataSetChanged();
+    }
+    public void replaceProject(Project project, int index){
+        mProjectList.set(index, project);
         notifyDataSetChanged();
     }
 }
