@@ -15,7 +15,7 @@ import edu.rosehulman.manc.crowdtranslate.model.Project;
  */
 public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.ViewHolder> {
 
-    private ArrayList<Project> mProjectList;
+    private final ArrayList<Project> mProjectList;
 
     public ProjectListAdapter(){
         mProjectList = new ArrayList();
@@ -54,9 +54,16 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
         public ViewHolder(View itemView) {
             super(itemView);
-            titleView = (TextView) itemView.findViewById(R.id.project_card_source_language);
+            titleView = (TextView) itemView.findViewById(R.id.project_card_title);
             sourceLanguageView = (TextView) itemView.findViewById(R.id.project_card_source_language);
-            targetLanguageView = (TextView) itemView.findViewById(R.id.project_card_source_language);
+            targetLanguageView = (TextView) itemView.findViewById(R.id.project_card_target_language);
         }
+    }
+    public ArrayList<Project> getProjectList(){
+        return mProjectList;
+    }
+    public void addProject(Project project){
+        mProjectList.add(project);
+        notifyDataSetChanged();
     }
 }
