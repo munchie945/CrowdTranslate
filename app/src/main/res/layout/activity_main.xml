@@ -21,8 +21,7 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+        android:layout_height="0dp"
         android:layout_marginTop="41dp"
         android:src="@android:drawable/ic_menu_info_details"
         android:layout_weight="0.31" />
@@ -31,30 +30,24 @@
         android:id="@+id/translate_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/translate_screen_title"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:text="@string/translate_screen_title" />
 
     <Button
         android:id="@+id/profile_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/profile_screen_title"
-        android:layout_centerHorizontal="true" />
+        android:text="@string/profile_screen_title" />
 
     <Button
         android:id="@+id/start_projects_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/start_project_screen_title"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal" />
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/browse_projects_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/browse_projects"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal" />
+        android:text="@string/browse_projects" />
 </LinearLayout>

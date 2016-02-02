@@ -24,7 +24,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.rosehulman.manc.crowdtranslate.MainActivity" />
         </activity>
-        <activity android:name=".ProjectInfoActivity"></activity>
+        <activity android:name=".ProjectInfoActivity" />
+        <activity
+            android:name=".TranslateActivity"
+            android:label="@string/title_activity_translate"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

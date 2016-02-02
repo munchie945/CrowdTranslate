@@ -21,4 +21,6 @@
     <string name="label_project">Project Name:</string>
     <string name="input_text">Text:</string>
     <string name="label_lines">Lines:</string>
+    <string name="title_activity_translate">TranslateActivity</string>
+    <string name="label_line">Line</string>
 </resources>

@@ -6,7 +6,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.ArrayList;
+
+import edu.rosehulman.manc.crowdtranslate.model.DefaultIProjectMatcher;
+import edu.rosehulman.manc.crowdtranslate.model.IProjectMatcher;
+import edu.rosehulman.manc.crowdtranslate.model.Line;
+import edu.rosehulman.manc.crowdtranslate.model.Translation;
+
 public class MainActivity extends AppCompatActivity {
+
+    public static final String EXTRA_LINE_KEY = "line";
+    public static final String EXTRA_TRANSLATIONS_KEY = "translations";
+
+    public IProjectMatcher projectMatcher = new DefaultIProjectMatcher();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +32,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, BrowseProjectsActivity.class);
+                MainActivity.this.startActivity(intent);
+            }
+        });
+
+        Button translateButton = (Button) findViewById(R.id.translate_button);
+        translateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, TranslateActivity.class);
+                Line line = projectMatcher.getNewLine();
+
+                // TODO: Determine if Translation as a class is needed
+                ArrayList<Translation> translations = line.getTranslations();
+                String[] translationStrings = new String[translations.size()];
+                for (int i = 0; i < translations.size(); i++){
+                    translationStrings[i] = translations.get(i).getText();
+                }
+
+                intent.putExtra(EXTRA_LINE_KEY, line.getText());
+                intent.putExtra(EXTRA_TRANSLATIONS_KEY, translationStrings);
                 MainActivity.this.startActivity(intent);
             }
         });
