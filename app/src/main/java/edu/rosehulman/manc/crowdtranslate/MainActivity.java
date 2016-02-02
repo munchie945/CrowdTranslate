@@ -43,15 +43,8 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, TranslateActivity.class);
                 Line line = projectMatcher.getNewLine();
 
-                // TODO: Determine if Translation as a class is needed
-                ArrayList<Translation> translations = line.getTranslations();
-                String[] translationStrings = new String[translations.size()];
-                for (int i = 0; i < translations.size(); i++){
-                    translationStrings[i] = translations.get(i).getText();
-                }
-
                 intent.putExtra(EXTRA_LINE_KEY, line.getText());
-                intent.putExtra(EXTRA_TRANSLATIONS_KEY, translationStrings);
+                intent.putParcelableArrayListExtra(EXTRA_TRANSLATIONS_KEY, line.getTranslations());
                 MainActivity.this.startActivity(intent);
             }
         });

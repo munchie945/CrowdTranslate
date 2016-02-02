@@ -1,7 +1,5 @@
 package edu.rosehulman.manc.crowdtranslate;
 
-import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +10,10 @@ import java.util.ArrayList;
 
 import edu.rosehulman.manc.crowdtranslate.model.Project;
 
-import static edu.rosehulman.manc.crowdtranslate.BrowseProjectsActivity.*;
-
 /**
  * Created by manc on 1/18/2016.
  */
-public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.ViewHolder> {
+public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.ProjectViewHolder> {
 
     private final ArrayList<Project> mProjectList;
 
@@ -35,13 +31,13 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ProjectViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.project_view, parent, false);
-        return new ViewHolder(itemView);
+        return new ProjectViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ProjectViewHolder holder, final int position) {
         final Project project = mProjectList.get(position);
         holder.titleView.setText(project.getName());
         holder.sourceLanguageView.setText(project.getSourceLang());
@@ -61,22 +57,10 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         return mProjectList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-
-        public TextView titleView;
-        public TextView sourceLanguageView;
-        public TextView targetLanguageView;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            titleView = (TextView) itemView.findViewById(R.id.project_card_title);
-            sourceLanguageView = (TextView) itemView.findViewById(R.id.project_card_source_language);
-            targetLanguageView = (TextView) itemView.findViewById(R.id.project_card_target_language);
-        }
-    }
     public ArrayList<Project> getProjectList(){
         return mProjectList;
     }
+
     public void addProject(Project project){
         mProjectList.add(project);
         notifyDataSetChanged();
@@ -84,5 +68,19 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     public void replaceProject(Project project, int index){
         mProjectList.set(index, project);
         notifyDataSetChanged();
+    }
+
+    public class ProjectViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView titleView;
+        public TextView sourceLanguageView;
+        public TextView targetLanguageView;
+
+        public ProjectViewHolder(View itemView) {
+            super(itemView);
+            titleView = (TextView) itemView.findViewById(R.id.project_card_title);
+            sourceLanguageView = (TextView) itemView.findViewById(R.id.project_card_source_language);
+            targetLanguageView = (TextView) itemView.findViewById(R.id.project_card_target_language);
+        }
     }
 }
