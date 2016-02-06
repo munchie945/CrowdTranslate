@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import edu.rosehulman.manc.crowdtranslate.adapters.TranslateAdapter;
 import edu.rosehulman.manc.crowdtranslate.model.Translation;
 
 public class TranslateActivity extends AppCompatActivity {

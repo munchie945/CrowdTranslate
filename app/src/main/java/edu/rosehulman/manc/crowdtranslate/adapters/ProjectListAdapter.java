@@ -1,4 +1,4 @@
-package edu.rosehulman.manc.crowdtranslate;
+package edu.rosehulman.manc.crowdtranslate.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import edu.rosehulman.manc.crowdtranslate.BrowseProjectsActivity;
+import edu.rosehulman.manc.crowdtranslate.R;
 import edu.rosehulman.manc.crowdtranslate.model.Project;
 
 /**
@@ -32,7 +34,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
     @Override
     public ProjectViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.project_view, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_project_view, parent, false);
         return new ProjectViewHolder(itemView);
     }
 

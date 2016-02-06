@@ -33,6 +33,10 @@ public class Translation implements Parcelable{
         return numVotes;
     }
 
+    public void incrementNumVotes(){
+        this.numVotes++;
+    }
+
     // Parceleable implementation from this point on
     @Override
     public int describeContents() {

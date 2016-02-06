@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
@@ -21,8 +20,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Locale;
-import java.util.StringTokenizer;
 
+import edu.rosehulman.manc.crowdtranslate.adapters.ProjectListAdapter;
 import edu.rosehulman.manc.crowdtranslate.model.Project;
 
 public class BrowseProjectsActivity extends AppCompatActivity {

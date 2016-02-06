@@ -23,4 +23,5 @@
     <string name="label_lines">Lines:</string>
     <string name="title_activity_translate">TranslateActivity</string>
     <string name="label_line">Line</string>
+    <string name="label_translations">Translations</string>
 </resources>

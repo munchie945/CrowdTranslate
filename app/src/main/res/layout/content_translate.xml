@@ -1,34 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="edu.rosehulman.manc.crowdtranslate.TranslateActivity"
-    tools:showIn="@layout/activity_translate">
+    tools:showIn="@layout/activity_translate"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
 
     <TextView
-        android:id="@+id/translate_line_label_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:textSize="30sp"
         android:text="@string/label_line" />
-    
+
+    <View
+        style="@style/Divider"
+        android:color="#122222"/>
+
     <TextView
         android:id="@+id/translate_line_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/translate_line_label_view"/>
+        android:textSize="20sp"
+        android:text="@string/default_string"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:text="@string/label_translations" />
+
+    <View
+        style="@style/Divider"
+        android:color="#122222"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/translate_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/translate_line_text_view"/>
+        android:layout_height="match_parent"/>
 
-</RelativeLayout>
+</LinearLayout>
