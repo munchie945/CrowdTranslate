@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class Line {
 
-    // TODO: look up Unicode encoding for forein languages
+    // TODO: look up Unicode encoding for foreign languages
     private String text;
     private ArrayList<Translation> translations;
 

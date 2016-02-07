@@ -10,6 +10,7 @@ public class Translation implements Parcelable{
 
     public static final Creator<Translation> CREATOR = new TranslationCreator();
 
+    private String originalLine;
     private String text;
     private int numVotes;
 
@@ -25,12 +26,29 @@ public class Translation implements Parcelable{
         numVotes = in.readInt();
     }
 
+    // Getters and setters
     public String getText(){
         return text;
     }
 
     public int getNumVotes(){
         return numVotes;
+    }
+
+    public String getOriginalLine() {
+        return originalLine;
+    }
+
+    public void setOriginalLine(String originalLine) {
+        this.originalLine = originalLine;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setNumVotes(int numVotes) {
+        this.numVotes = numVotes;
     }
 
     public void incrementNumVotes(){

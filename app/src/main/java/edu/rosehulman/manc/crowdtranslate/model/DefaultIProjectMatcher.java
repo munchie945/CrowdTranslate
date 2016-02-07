@@ -13,8 +13,12 @@ public class DefaultIProjectMatcher implements IProjectMatcher {
     @Override
     public Line getNewLine() {
         Line line = new Line("I have an apple");
-        line.addTranslation(new Translation("Ich habe einen Apfel"));
-        line.addTranslation(new Translation("Ich hat eine Apfel"));
+        Translation t1 = new Translation("Ich habe einen Apfel");
+        Translation t2 = new Translation("Ich hat eine Apfel");
+        t1.setOriginalLine("I have an apple");
+        t2.setOriginalLine("I have an apple");
+        line.addTranslation(t1);
+        line.addTranslation(t2);
         return line;
     }
 }
