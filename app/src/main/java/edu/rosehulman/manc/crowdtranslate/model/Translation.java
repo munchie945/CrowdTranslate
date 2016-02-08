@@ -3,6 +3,8 @@ package edu.rosehulman.manc.crowdtranslate.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * Created by manc on 1/17/2016.
  */
@@ -10,10 +12,15 @@ public class Translation implements Parcelable{
 
     public static final Creator<Translation> CREATOR = new TranslationCreator();
 
-    private String originalLine;
-    private String text;
-    private int numVotes;
+    @JsonIgnore
+    private String key;
 
+    private String lineKey;
+    private int numVotes;
+    private String text;
+
+    // default empty constructor for Jackson
+    public Translation (){}
 
     public Translation (String text){
         this.text = text;
@@ -22,8 +29,22 @@ public class Translation implements Parcelable{
 
     // Constructor for Parcelable implementation
     protected Translation(Parcel in) {
-        text = in.readString();
+        key = in.readString();
+        lineKey = in.readString();
         numVotes = in.readInt();
+        text = in.readString();
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public String getLineKey() {
+        return lineKey;
+    }
+
+    public int getNumVotes(){
+        return numVotes;
     }
 
     // Getters and setters
@@ -31,24 +52,20 @@ public class Translation implements Parcelable{
         return text;
     }
 
-    public int getNumVotes(){
-        return numVotes;
+    public void setKey(String key) {
+        this.key = key;
     }
 
-    public String getOriginalLine() {
-        return originalLine;
-    }
-
-    public void setOriginalLine(String originalLine) {
-        this.originalLine = originalLine;
-    }
-
-    public void setText(String text) {
-        this.text = text;
+    public void setLineKey(String lineKey) {
+        this.lineKey = lineKey;
     }
 
     public void setNumVotes(int numVotes) {
         this.numVotes = numVotes;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     public void incrementNumVotes(){
@@ -64,8 +81,10 @@ public class Translation implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(text);
+        dest.writeString(key);
+        dest.writeString(lineKey);
         dest.writeInt(numVotes);
+        dest.writeString(text);
     }
 
     private static class TranslationCreator implements Parcelable.Creator<Translation> {

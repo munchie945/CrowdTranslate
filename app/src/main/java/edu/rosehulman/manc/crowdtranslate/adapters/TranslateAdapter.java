@@ -1,11 +1,13 @@
 package edu.rosehulman.manc.crowdtranslate.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,9 +22,11 @@ import edu.rosehulman.manc.crowdtranslate.model.Translation;
  */
 public class TranslateAdapter extends RecyclerView.Adapter<TranslateAdapter.TranslateViewHolder> {
 
-    ArrayList<Translation> mTranslations;
+    private Line originalLine;
+    private ArrayList<Translation> mTranslations;
 
-    public TranslateAdapter(ArrayList<Translation> translations){
+    public TranslateAdapter(Line originalLine, ArrayList<Translation> translations){
+        this.originalLine = originalLine;
         if (translations == null){
             mTranslations = new ArrayList();
         } else {
@@ -69,18 +73,28 @@ public class TranslateAdapter extends RecyclerView.Adapter<TranslateAdapter.Tran
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     LayoutInflater layoutInflater = LayoutInflater.from(context);
                     View dialogView = layoutInflater.inflate(R.layout.dialog_submit_translation, null);
+
+                    // TODO: remove from layout
                     TextView lineView = (TextView) dialogView.findViewById(R.id.translate_dialog_original_line_text_view);
                     lineView.setText("Testing");
-                    dialogView.findViewById(R.id.translate_dialog_edit_text);
 
-
+                    final EditText inputTranslation = (EditText) dialogView.findViewById(R.id.translate_dialog_edit_text);
                     // Setting the message of the dialog box
+                    // TODO: Only temp "Submit" behavior; replace with real stuff
                     Translation translation = mTranslations.get(getAdapterPosition());
-                    String originalLine = translation.getOriginalLine();
                     builder.setTitle("Translate")
-                            .setMessage(originalLine)
+                            .setMessage(originalLine.getText())
                             .setView(dialogView)
-                            .setPositiveButton("Submit", null)
+                            .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Translation t = new Translation();
+                                    t.setText(inputTranslation.getText().toString());
+                                    t.setNumVotes(0);
+                                    mTranslations.add(t);
+                                    notifyItemInserted(getAdapterPosition());
+                                }
+                            })
                             .setNegativeButton("Cancel", null)
                             .show();
                 }

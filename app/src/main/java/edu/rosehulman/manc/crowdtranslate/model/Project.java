@@ -3,6 +3,8 @@ package edu.rosehulman.manc.crowdtranslate.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -11,29 +13,38 @@ import java.util.StringTokenizer;
  */
 public class Project implements Parcelable{
 
-    private String name;
+    public static Creator<Project> CREATOR = new ProjectCreator();
 
-    // TODO: better implementation of Lang to bind it better
-    private String sourceLang; // langugae of text
+    @JsonIgnore
+    private String key;
+
+    // TODO: better implementation of Lang to restrict options
+    private String title;
+    private String sourceLang; // language of text
     private String destLang; // language to be translated into
 
-    // TODO: temp implementation of tags; replace with real one
-    private ArrayList<String> tags;
+    @JsonIgnore
     private ArrayList<Line> lines;
 
+    // TODO: Implement actual tag system
+//    private ArrayList<String> tags;
+
+    public Project(){
+        // empty constructor for Jackson
+        lines = new ArrayList<>();
+    }
+
     public Project(String name, String sourceLang, String destLang){
-        this.name = name;
+        this.title = name;
         this.sourceLang = sourceLang;
         this.destLang = destLang;
-        this.tags = new ArrayList();
         this.lines = new ArrayList();
     }
 
     public Project(String name, String sourceLang, String destLang, String text){
-        this.name = name;
+        this.title = name;
         this.sourceLang = sourceLang;
         this.destLang = destLang;
-        this.tags = new ArrayList();
 
         this.lines = new ArrayList();
         StringTokenizer stringTokenizer = new StringTokenizer(text,"\n");
@@ -42,26 +53,22 @@ public class Project implements Parcelable{
         }
     }
     protected Project(Parcel in) {
-        name = in.readString();
+        key = in.readString();
+        title = in.readString();
         sourceLang = in.readString();
         destLang = in.readString();
-        tags = in.createStringArrayList();
+
+        // TODO: SUPER BAD FORM; FIND OUT ACTUAL ROOT CAUSE
+        try {
+            in.readTypedList(lines, Line.CREATOR);
+        } catch (Exception e){
+            // do nothing
+        }
+
     }
 
-    public static final Creator<Project> CREATOR = new Creator<Project>() {
-        @Override
-        public Project createFromParcel(Parcel in) {
-            return new Project(in);
-        }
-
-        @Override
-        public Project[] newArray(int size) {
-            return new Project[size];
-        }
-    };
-
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
     public String getSourceLang() {
@@ -72,12 +79,32 @@ public class Project implements Parcelable{
         return destLang;
     }
 
-    public ArrayList<String> getTags() {
-        return tags;
-    }
-
     public ArrayList<Line> getLines() {
         return lines;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setSourceLang(String sourceLang) {
+        this.sourceLang = sourceLang;
+    }
+
+    public void setDestLang(String destLang) {
+        this.destLang = destLang;
+    }
+
+    public void setLines(ArrayList<Line> lines) {
+        this.lines = lines;
+    }
+
+    public void addLine(Line line){
+        this.lines.add(line);
     }
 
     @Override
@@ -87,8 +114,22 @@ public class Project implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
+        dest.writeString(key);
+        dest.writeString(title);
         dest.writeString(sourceLang);
         dest.writeString(destLang);
+        dest.writeTypedList(lines);
+    }
+
+    private static class ProjectCreator implements Creator<Project> {
+        @Override
+        public Project createFromParcel(Parcel source) {
+            return new Project(source);
+        }
+
+        @Override
+        public Project[] newArray(int size) {
+            return new Project[size];
+        }
     }
 }

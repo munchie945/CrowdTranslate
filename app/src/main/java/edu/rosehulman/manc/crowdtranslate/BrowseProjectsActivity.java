@@ -48,10 +48,12 @@ public class BrowseProjectsActivity extends AppCompatActivity {
             }
         });
 
+        ArrayList<Project> projectList = getIntent().getParcelableArrayListExtra(MainActivity.EXTRA_PROJECTS_KEY);
+
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.browse_projects_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-        mProjectListAdapter = new ProjectListAdapter(this);
+        mProjectListAdapter = new ProjectListAdapter(projectList, this);
         recyclerView.setAdapter(mProjectListAdapter);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

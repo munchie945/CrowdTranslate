@@ -21,15 +21,15 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
     private BrowseProjectsActivity mContext;
 
-    public ProjectListAdapter(BrowseProjectsActivity context){
+    public ProjectListAdapter(ArrayList<Project> projectList, BrowseProjectsActivity context){
         mContext = context;
-        mProjectList = new ArrayList();
+        mProjectList = projectList;
 
         // TODO: only for testing; replace with methods to actually get projects
-        for (int i = 1; i <= 10; i++){
-            Project project = new Project("Default Title " + i, "English", "Spanish");
-            mProjectList.add(project);
-        }
+//        for (int i = 1; i <= 10; i++){
+//            Project project = new Project("Default Title " + i, "English", "Spanish");
+//            mProjectList.add(project);
+//        }
     }
 
     @Override
@@ -41,7 +41,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     @Override
     public void onBindViewHolder(final ProjectViewHolder holder, final int position) {
         final Project project = mProjectList.get(position);
-        holder.titleView.setText(project.getName());
+        holder.titleView.setText(project.getTitle());
         holder.sourceLanguageView.setText(project.getSourceLang());
         holder.targetLanguageView.setText(project.getDestLang());
         holder.itemView.setOnClickListener(new View.OnClickListener() {

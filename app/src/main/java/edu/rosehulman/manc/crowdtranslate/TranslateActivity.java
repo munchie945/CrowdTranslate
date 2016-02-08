@@ -15,6 +15,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import edu.rosehulman.manc.crowdtranslate.adapters.TranslateAdapter;
+import edu.rosehulman.manc.crowdtranslate.model.Line;
 import edu.rosehulman.manc.crowdtranslate.model.Translation;
 
 public class TranslateActivity extends AppCompatActivity {
@@ -39,35 +40,19 @@ public class TranslateActivity extends AppCompatActivity {
 
         // get extras
         Intent intent = getIntent();
-        String textString = intent.getStringExtra(MainActivity.EXTRA_LINE_KEY);
-        ArrayList<Translation> translations = intent.getParcelableArrayListExtra(MainActivity.EXTRA_TRANSLATIONS_KEY);
-
-
+        Line line = intent.getParcelableExtra(MainActivity.EXTRA_LINE_KEY);
+        String textString = line.getText();
+        ArrayList<Translation> translations = line.getTranslations();
 
         // Set the original text string
         TextView originalLineView = (TextView) findViewById(R.id.translate_line_text_view);
         originalLineView.setText(textString);
 
         // recycler view and adapter
-        this.mAdapter = new TranslateAdapter(translations);
+        this.mAdapter = new TranslateAdapter(line, translations);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.translate_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(this.mAdapter);
-        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-            @Override
-            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-                return false;
-            }
-
-            @Override
-            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-            }
-
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-            }
-        });
     }
 
 }

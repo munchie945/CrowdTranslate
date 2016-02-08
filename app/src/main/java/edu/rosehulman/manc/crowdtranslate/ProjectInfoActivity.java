@@ -37,7 +37,7 @@ public class ProjectInfoActivity extends AppCompatActivity {
         });
 
 
-        projectName.setText(mProject.getName());
+        projectName.setText(mProject.getTitle());
         sourceName.setText(mProject.getSourceLang());
         targetLang.setText(mProject.getDestLang());
 
