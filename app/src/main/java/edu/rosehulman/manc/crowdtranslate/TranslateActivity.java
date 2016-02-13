@@ -42,14 +42,14 @@ public class TranslateActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Line line = intent.getParcelableExtra(MainActivity.EXTRA_LINE_KEY);
         String textString = line.getText();
-        ArrayList<Translation> translations = line.getTranslations();
 
         // Set the original text string
         TextView originalLineView = (TextView) findViewById(R.id.translate_line_text_view);
         originalLineView.setText(textString);
 
         // recycler view and adapter
-        this.mAdapter = new TranslateAdapter(line, translations);
+        // TODO: Line probably doesn't need to store translations anymore
+        this.mAdapter = new TranslateAdapter(line);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.translate_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(this.mAdapter);

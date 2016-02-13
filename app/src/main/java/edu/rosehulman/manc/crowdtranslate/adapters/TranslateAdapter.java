@@ -11,8 +11,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+
 import java.util.ArrayList;
 
+import edu.rosehulman.manc.crowdtranslate.Constants;
 import edu.rosehulman.manc.crowdtranslate.R;
 import edu.rosehulman.manc.crowdtranslate.model.Line;
 import edu.rosehulman.manc.crowdtranslate.model.Translation;
@@ -22,16 +28,19 @@ import edu.rosehulman.manc.crowdtranslate.model.Translation;
  */
 public class TranslateAdapter extends RecyclerView.Adapter<TranslateAdapter.TranslateViewHolder> {
 
-    private Line originalLine;
-    private ArrayList<Translation> mTranslations;
+    // the key for "project key" field
+    private static final String LINE_KEY_STRING = "lineKey";
 
-    public TranslateAdapter(Line originalLine, ArrayList<Translation> translations){
-        this.originalLine = originalLine;
-        if (translations == null){
-            mTranslations = new ArrayList();
-        } else {
-            mTranslations = translations;
-        }
+    private Line mOriginalLine;
+    private Firebase mTranslationRef;
+    private ArrayList<Translation> mTranslations = new ArrayList<>();;
+
+    public TranslateAdapter(Line originalLine){
+        this.mOriginalLine = originalLine;
+        mTranslationRef = new Firebase(Constants.TRANSLATION_PATH);
+        mTranslationRef.orderByChild(LINE_KEY_STRING)
+                .equalTo(originalLine.getKey())
+                .addChildEventListener(new TranslationChildEventListener());
     }
 
     @Override
@@ -45,6 +54,14 @@ public class TranslateAdapter extends RecyclerView.Adapter<TranslateAdapter.Tran
         final Translation translation = mTranslations.get(position);
         holder.translationLineTextView.setText(translation.getText());
         holder.numVotesTextView.setText(translation.getNumVotes() + "");
+    }
+
+    private void createAndPushTranslation(String translationText){
+        Translation t = new Translation();
+        t.setLineKey(mOriginalLine.getKey());
+        t.setText(translationText);
+        t.setNumVotes(0);
+        mTranslationRef.push().setValue(t);
     }
 
     @Override
@@ -81,18 +98,14 @@ public class TranslateAdapter extends RecyclerView.Adapter<TranslateAdapter.Tran
                     final EditText inputTranslation = (EditText) dialogView.findViewById(R.id.translate_dialog_edit_text);
                     // Setting the message of the dialog box
                     // TODO: Only temp "Submit" behavior; replace with real stuff
-                    Translation translation = mTranslations.get(getAdapterPosition());
+                    final Translation translation = mTranslations.get(getAdapterPosition());
                     builder.setTitle("Translate")
-                            .setMessage(originalLine.getText())
+                            .setMessage(mOriginalLine.getText())
                             .setView(dialogView)
                             .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Translation t = new Translation();
-                                    t.setText(inputTranslation.getText().toString());
-                                    t.setNumVotes(0);
-                                    mTranslations.add(t);
-                                    notifyItemInserted(getAdapterPosition());
+                                    createAndPushTranslation(inputTranslation.getText().toString());
                                 }
                             })
                             .setNegativeButton("Cancel", null)
@@ -109,6 +122,36 @@ public class TranslateAdapter extends RecyclerView.Adapter<TranslateAdapter.Tran
                     notifyItemChanged(getAdapterPosition());
                 }
             });
+        }
+    }
+
+    private class TranslationChildEventListener implements ChildEventListener {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            Translation addedTranslation = dataSnapshot.getValue(Translation.class);
+            addedTranslation.setKey(dataSnapshot.getKey());
+            mTranslations.add(addedTranslation);
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onCancelled(FirebaseError firebaseError) {
+
         }
     }
 }
