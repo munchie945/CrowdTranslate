@@ -5,11 +5,25 @@ package edu.rosehulman.manc.crowdtranslate.model;
  */
 public class User {
 
+    private String key;
     private String username;
 
-    // TODO: other fields, as needed
+    public User(){}
 
-    public User(String username){
+    public String getKey() {
+        return key;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public void setUsername(String username) {
         this.username = username;
     }
+
 }

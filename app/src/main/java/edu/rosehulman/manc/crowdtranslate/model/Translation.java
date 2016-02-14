@@ -72,6 +72,24 @@ public class Translation implements Parcelable{
         this.numVotes++;
     }
 
+    public void decrementNumVotes() {
+        this.numVotes--;
+    }
+
+    public boolean keyEquals(String key){
+        return key != null && this.key.equals(key);
+    }
+
+    @Override
+    public Object clone() {
+        Translation clone = new Translation();
+        clone.setKey(key);
+        clone.setText(text);
+        clone.setLineKey(lineKey);
+        clone.setNumVotes(numVotes);
+        return clone;
+    }
+
     // Parceleable implementation from this point on
     @Override
     public int describeContents() {
