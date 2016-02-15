@@ -3,6 +3,7 @@ package edu.rosehulman.manc.crowdtranslate;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -12,9 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.rosehulman.manc.crowdtranslate.model.Project;
+import edu.rosehulman.manc.crowdtranslate.model.User;
 import edu.rosehulman.manc.crowdtranslate.projectMatcher.DefaultIProjectMatcher;
 import edu.rosehulman.manc.crowdtranslate.projectMatcher.IProjectMatcher;
 import edu.rosehulman.manc.crowdtranslate.model.Line;
+import edu.rosehulman.manc.crowdtranslate.projectMatcher.RelevanceProjectMatcher;
 import edu.rosehulman.manc.crowdtranslate.projectMatcher.SimpleProjectMatcher;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,18 +44,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // TODO: replace with code to get real user
+        User user = new User();
+        ArrayList<String> userTags = new ArrayList<>();
+        userTags.add("music");
+        userTags.add("art");
+        user.setUsername("inlocoparentis");
+        user.setTagArray(userTags);
+
         Firebase.setAndroidContext(this);
-        Firebase baseRef = new Firebase(Constants.BASE_FIREBASE_URL);
-        projectMatcher = new SimpleProjectMatcher(baseRef);
+        projectMatcher = new RelevanceProjectMatcher(user);
 
         Button translateButton = (Button) findViewById(R.id.translate_button);
         translateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, TranslateActivity.class);
-                Line line = projectMatcher.getNewLine();
-
-                intent.putExtra(EXTRA_LINE_KEY, line);
+                Line lineToTranslate = projectMatcher.getNewLine();
+                intent.putExtra(EXTRA_LINE_KEY, lineToTranslate);
                 MainActivity.this.startActivity(intent);
             }
         });

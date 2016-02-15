@@ -19,6 +19,8 @@ import edu.rosehulman.manc.crowdtranslate.model.Project;
 import edu.rosehulman.manc.crowdtranslate.model.Translation;
 
 /**
+ * Only partially matches language criteria (hard coded), with no relevance ranking.
+ * Done as first step to integration with database
  * Created by manc on 2/7/2016.
  */
 public class SimpleProjectMatcher implements IProjectMatcher {
@@ -76,7 +78,6 @@ public class SimpleProjectMatcher implements IProjectMatcher {
                         .equalTo(currProjectKey)
                         .addValueEventListener(new LineValueListener(currProject));
             }
-
         }
 
         @Override

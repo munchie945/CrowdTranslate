@@ -17,7 +17,7 @@ import edu.rosehulman.manc.crowdtranslate.model.Translation;
  * Created by manc on 2/1/2016.
  */
 public class DefaultIProjectMatcher implements IProjectMatcher {
-
+    
     @Override
     public Line getNewLine() {
         Line line = new Line("I have an apple");
