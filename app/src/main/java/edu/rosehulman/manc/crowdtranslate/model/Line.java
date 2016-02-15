@@ -25,14 +25,13 @@ public class Line implements Parcelable{
     // things you'll have to get from a query
     private ArrayList<Translation> translations = new ArrayList<>();
 
-
+    // empty constructor for Jackson
     public Line(){
-        // empty constructor for Jackson
     }
 
     public Line(String lineOfText){
         this.text = lineOfText;
-        this.translations = new ArrayList();
+        this.translations = new ArrayList<>();
     }
 
     protected Line(Parcel in) {

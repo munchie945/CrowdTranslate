@@ -44,6 +44,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         holder.titleView.setText(project.getTitle());
         holder.sourceLanguageView.setText(project.getSourceLang());
         holder.targetLanguageView.setText(project.getDestLang());
+        holder.tagsView.setText(project.getTagString());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,12 +78,14 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         public TextView titleView;
         public TextView sourceLanguageView;
         public TextView targetLanguageView;
+        public TextView tagsView;
 
         public ProjectViewHolder(View itemView) {
             super(itemView);
             titleView = (TextView) itemView.findViewById(R.id.project_card_title);
             sourceLanguageView = (TextView) itemView.findViewById(R.id.project_card_source_language);
             targetLanguageView = (TextView) itemView.findViewById(R.id.project_card_target_language);
+            tagsView = (TextView) itemView.findViewById(R.id.project_card_tags);
         }
     }
 }

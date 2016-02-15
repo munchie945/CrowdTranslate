@@ -7,6 +7,7 @@ import android.util.Log;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -61,18 +62,17 @@ public class Project implements Parcelable{
         }
     }
     protected Project(Parcel in) {
+        tags = new ArrayList<>();
+        lines = new ArrayList<>();
+
         key = in.readString();
         title = in.readString();
         sourceLang = in.readString();
         destLang = in.readString();
+        relevance = in.readDouble();
 
-        // TODO: SUPER BAD FORM; FIND OUT ACTUAL ROOT CAUSE
-        try {
-            in.readTypedList(lines, Line.CREATOR);
-        } catch (Exception e){
-            // do nothing
-        }
-
+        in.readStringList(tags);
+        in.readTypedList(lines, Line.CREATOR);
     }
 
     public String getTitle() {
@@ -89,10 +89,6 @@ public class Project implements Parcelable{
 
     public ArrayList<Line> getLines() {
         return lines;
-    }
-
-    private double getRelevance(){
-        return this.relevance;
     }
 
     public void setKey(String key) {
@@ -117,6 +113,16 @@ public class Project implements Parcelable{
 
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+    private double getRelevance(){
+        // only for use in the private comparator
+        return this.relevance;
+    }
+
+    public String getTagString(){
+        String arrayString = Arrays.toString(tags.toArray());
+        return arrayString.substring(1, arrayString.length() - 1); // remove '[' and ']'
     }
 
     public void addLine(Line line){
@@ -152,6 +158,8 @@ public class Project implements Parcelable{
         dest.writeString(title);
         dest.writeString(sourceLang);
         dest.writeString(destLang);
+        dest.writeDouble(relevance);
+        dest.writeStringList(tags);
         dest.writeTypedList(lines);
     }
 
