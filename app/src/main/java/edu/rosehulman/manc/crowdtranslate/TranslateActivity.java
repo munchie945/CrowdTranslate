@@ -15,6 +15,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import edu.rosehulman.manc.crowdtranslate.adapters.TranslateAdapter;
+import edu.rosehulman.manc.crowdtranslate.fragment.LandingScreenFragment;
 import edu.rosehulman.manc.crowdtranslate.model.Line;
 import edu.rosehulman.manc.crowdtranslate.model.Translation;
 
@@ -40,7 +41,7 @@ public class TranslateActivity extends AppCompatActivity {
 
         // get extras
         Intent intent = getIntent();
-        Line line = intent.getParcelableExtra(MainActivity.EXTRA_LINE_KEY);
+        Line line = intent.getParcelableExtra(LandingScreenFragment.EXTRA_LINE_KEY);
         String textString = line.getText();
 
         // Set the original text string

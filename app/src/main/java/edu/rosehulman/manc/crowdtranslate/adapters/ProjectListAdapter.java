@@ -24,12 +24,6 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     public ProjectListAdapter(ArrayList<Project> projectList, BrowseProjectsActivity context){
         mContext = context;
         mProjectList = projectList;
-
-        // TODO: only for testing; replace with methods to actually get projects
-//        for (int i = 1; i <= 10; i++){
-//            Project project = new Project("Default Title " + i, "English", "Spanish");
-//            mProjectList.add(project);
-//        }
     }
 
     @Override
@@ -53,7 +47,6 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             }
         });
     }
-
 
     @Override
     public int getItemCount() {
