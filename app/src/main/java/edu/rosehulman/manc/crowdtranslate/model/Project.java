@@ -30,7 +30,7 @@ public class Project implements Parcelable{
     private List<String> tags;
 
     @JsonIgnore
-    private ArrayList<Line> lines;
+    private ArrayList<Line> lines = new ArrayList<Line>();
 
     @JsonIgnore
     private double relevance; // how relevant project is to user
@@ -40,7 +40,6 @@ public class Project implements Parcelable{
 
     public Project(){
         // empty constructor for Jackson
-        lines = new ArrayList<>();
     }
 
     public Project(String name, String sourceLang, String destLang){
@@ -64,8 +63,7 @@ public class Project implements Parcelable{
     protected Project(Parcel in) {
         tags = new ArrayList<>();
         lines = new ArrayList<>();
-
-        key = in.readString();
+        setKey(in.readString());
         title = in.readString();
         sourceLang = in.readString();
         destLang = in.readString();
@@ -91,8 +89,24 @@ public class Project implements Parcelable{
         return lines;
     }
 
+    public String getLinesString(){
+        String text = "";
+        if(!lines.isEmpty()){
+            for (Line l: lines){
+                text += l.getText()+"\n";
+            }
+            text=text.substring(0, text.length()-1);
+        }
+        return text;
+    }
+
     public void setKey(String key) {
         this.key = key;
+        if(!lines.isEmpty()){
+        for(Line l: lines){
+            l.setProjectKey(key);
+        }
+        }
     }
 
     public void setTitle(String title) {

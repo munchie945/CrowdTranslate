@@ -29,11 +29,16 @@ public class Line implements Parcelable{
     public Line(){
     }
 
+    public Line(String lineOfText, String projectKey){
+        this.text = lineOfText;
+        this.projectKey = projectKey;
+//        this.position = position;
+        this.translations = new ArrayList<>();
+    }
     public Line(String lineOfText){
         this.text = lineOfText;
         this.translations = new ArrayList<>();
     }
-
     protected Line(Parcel in) {
         key = in.readString();
         position = in.readInt();
