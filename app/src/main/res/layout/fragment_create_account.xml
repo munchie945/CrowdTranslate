@@ -1,0 +1,62 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="edu.rosehulman.manc.crowdtranslate.fragment.CreateAccountFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/languages_header" />
+
+    <View
+        style="@style/Divider"
+        android:color="#122222"/>
+
+    <ListView
+        android:id="@+id/preferences_languages_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <!-- For the actionId, see EditorInfo IME Options -->
+    <AutoCompleteTextView
+        android:id="@+id/preference_language_autocomplete_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:singleLine="true"
+        android:imeActionId="6"
+        android:imeActionLabel="Add"
+        android:hint="@string/preference_add_language_prompt" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/preferences_interests_header" />
+
+    <View
+        style="@style/Divider"
+        android:color="#122222"/>
+
+    <ListView
+        android:id="@+id/preferences_tags_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <AutoCompleteTextView
+        android:id="@+id/preference_tag_autocomplete_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:singleLine="true"
+        android:imeOptions="actionDone"
+        android:imeActionLabel="Add"
+        android:hint="@string/preference_add_interest_prompt" />
+
+
+</LinearLayout>

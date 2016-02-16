@@ -14,7 +14,8 @@ public class User {
     @JsonIgnore
     private String key;
     private String username;
-    private List<String> tagArray; // not really used
+    private List<String> languages;
+    private List<String> tags; // not really used
 
     // Set version of tag, for faster membership queries
     @JsonIgnore
@@ -30,6 +31,14 @@ public class User {
         return username;
     }
 
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public List<String> getLanguages() {
+        return languages;
+    }
+
     public Set<String> getTagSet() {
         return tagSet;
     }
@@ -42,8 +51,12 @@ public class User {
         this.username = username;
     }
 
-    public void setTagArray(List<String> tagArray) {
-        this.tagArray = tagArray;
-        this.tagSet = new HashSet<>(tagArray);
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+        this.tagSet = new HashSet<>(tags);
+    }
+
+    public void setLanguages(List<String> languages) {
+        this.languages = languages;
     }
 }

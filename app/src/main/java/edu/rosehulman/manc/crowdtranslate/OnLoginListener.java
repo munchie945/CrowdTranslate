@@ -5,6 +5,12 @@ package edu.rosehulman.manc.crowdtranslate;
  */
 public interface OnLoginListener {
 
-    public void onLogin(String userUid);
+    public void onSuccessfulLogin(String userUid);
+
+    /**
+     * New account was created (and logged into)
+     * @param userUid UID of current user
+     */
+    public void onAccountCreated(String userUid);
 
 }

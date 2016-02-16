@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CrowdTranslate</string>
+    <string name="app_name">Crowd Translate</string>
     <string name="title_activity_browse_projects">BrowseProjectsActivity</string>
     <string name="default_string">default</string>
     <string name="default_project_title">Project Title</string>
@@ -25,12 +25,14 @@
     <string name="label_line">Line</string>
     <string name="label_translations">Translations</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="login_prompt">Login:</string>
     <string name="password_prompt">Password:</string>
     <string name="email_prompt">Email:</string>
     <string name="save_credentials_prompt">Save my login information</string>
     <string name="login_button_text">Login</string>
     <string name="login_new_account_text">Create New Account</string>
+    <string name="languages_header">Languages</string>
+    <string name="preference_add_language_prompt">+ Add a language...</string>
+    <string name="preferences_interests_header">Your Interests</string>
+    <string name="preference_add_interest_prompt">+ Add an interest...</string>
 </resources>

@@ -2,6 +2,7 @@ package edu.rosehulman.manc.crowdtranslate.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -35,15 +36,13 @@ import edu.rosehulman.manc.crowdtranslate.projectMatcher.RelevanceProjectMatcher
 public class LandingScreenFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String USER_UID_KEY = "userUid";
 
     public static final String EXTRA_LINE_KEY = "line";
     public static final String EXTRA_PROJECTS_KEY = "projects";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String mUserUid;
 
     private OnFragmentInteractionListener mListener;
 
@@ -57,16 +56,14 @@ public class LandingScreenFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param userUid uid of authed user
      * @return A new instance of fragment LandingScreenFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static LandingScreenFragment newInstance(String param1, String param2) {
+    public static LandingScreenFragment newInstance(String userUid) {
         LandingScreenFragment fragment = new LandingScreenFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(USER_UID_KEY, userUid);
         fragment.setArguments(args);
 
         return fragment;
@@ -83,17 +80,16 @@ public class LandingScreenFragment extends Fragment {
         userTags.add("music");
         userTags.add("art");
         user.setUsername("inlocoparentis");
-        user.setTagArray(userTags);
+        user.setTags(userTags);
         projectMatcher = new RelevanceProjectMatcher(user);
 
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mUserUid = getArguments().getString(USER_UID_KEY);
         }
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(final View view, Bundle savedInstanceState) {
         final Activity parentActivity = getActivity();
 
         // TODO: add logic for other buttons when their activities are done
@@ -117,6 +113,16 @@ public class LandingScreenFragment extends Fragment {
                 Line lineToTranslate = projectMatcher.getNewLine();
                 intent.putExtra(EXTRA_LINE_KEY, lineToTranslate);
                 parentActivity.startActivity(intent);
+            }
+        });
+
+        Button profileButton = (Button) view.findViewById(R.id.profile_button);
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: Finish this to get to preferences page
+                FragmentManager fragmentManager = getFragmentManager();
+                Fragment managePreferencesFragment = CreateAccountFragment.newInstance(mUserUid);
             }
         });
     }

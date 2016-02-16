@@ -2,6 +2,7 @@ package edu.rosehulman.manc.crowdtranslate.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import android.widget.EditText;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+
+import java.util.Map;
 
 import edu.rosehulman.manc.crowdtranslate.Constants;
 import edu.rosehulman.manc.crowdtranslate.OnLoginListener;
@@ -82,25 +85,67 @@ public class LoginFragment extends Fragment {
         final Firebase baseRef = new Firebase(Constants.BASE_FIREBASE_URL);
         final EditText emailEditText = (EditText) view.findViewById(R.id.login_email_edit_text);
         final EditText passwordEditText = (EditText) view.findViewById(R.id.login_password_edit_text);
+
+        // Login
         Button loginButton = (Button) view.findViewById(R.id.login_submit_button);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
-                baseRef.authWithPassword(email, password, new Firebase.AuthResultHandler() {
-                    @Override
-                    public void onAuthenticated(AuthData authData) {
-                        Log.i("LoginFragment", "Logged in user with Uid " + authData.getUid());
-                        loginListener.onLogin(authData.getUid());
-                    }
+                loginUser(email, password, false);
+            }
+        });
 
-                    @Override
-                    public void onAuthenticationError(FirebaseError firebaseError) {
-                        // TODO replace with actual error
-                        Log.e("LoginFragment", "Authentication error happened: " + firebaseError.getMessage());
-                    }
-                });
+        // Create account
+        Button createAccountButton = (Button) view.findViewById(R.id.login_new_account_button);
+        createAccountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String email = emailEditText.getText().toString();
+                final String password = passwordEditText.getText().toString();
+                if (!(email.isEmpty() || password.isEmpty())){
+                    baseRef.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
+                        @Override
+                        public void onSuccess(Map<String, Object> result) {
+                            Log.i("LoginFragment", "Successfully created account with Uid " + result.get("uid"));
+                            loginUser(email, password, true);
+                        }
+
+                        @Override
+                        public void onError(FirebaseError firebaseError) {
+                            // TODO replace with actual error, at least with Toast
+                            Log.e("LoginFragment", "Account creation error happened: " + firebaseError.getMessage());
+                        }
+                    });
+                } else {
+                    // TODO:
+                    Log.e("LoginFragment", "Empty email or password; ask user to try again");
+                }
+            }
+        });
+    }
+
+    public void loginUser(String email, String password, final boolean isNewAccount){
+        final Firebase baseRef = new Firebase(Constants.BASE_FIREBASE_URL);
+        final OnLoginListener loginListener = (OnLoginListener) getActivity();
+
+        baseRef.authWithPassword(email, password, new Firebase.AuthResultHandler() {
+            @Override
+            public void onAuthenticated(AuthData authData) {
+                Log.i("LoginFragment", "Logged in user with Uid " + authData.getUid());
+                String uid = authData.getUid();
+                if (isNewAccount) {
+                    loginListener.onAccountCreated(uid);
+                } else {
+                    loginListener.onSuccessfulLogin(authData.getUid());
+                }
+            }
+
+            @Override
+            public void onAuthenticationError(FirebaseError firebaseError) {
+                // TODO replace with actual error, at least with Toast
+                Log.e("LoginFragment", "Authentication error happened: " + firebaseError.getMessage());
             }
         });
     }
