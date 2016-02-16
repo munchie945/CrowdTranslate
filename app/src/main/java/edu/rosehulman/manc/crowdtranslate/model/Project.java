@@ -40,6 +40,7 @@ public class Project implements Parcelable{
 
     public Project(){
         // empty constructor for Jackson
+        this.lines = new ArrayList<>();
     }
 
     public Project(String name, String sourceLang, String destLang){
@@ -108,7 +109,9 @@ public class Project implements Parcelable{
         }
         }
     }
-
+    public String getLineKey(int position){
+        return lines.get(position).getKey();
+    }
     public void setTitle(String title) {
         this.title = title;
     }

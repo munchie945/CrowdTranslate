@@ -10,4 +10,7 @@
         android:textSize="20sp"
         />
 
+    <View
+        style="@style/Divider"
+        android:color="#122222"/>
 </LinearLayout>
