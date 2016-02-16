@@ -10,115 +10,114 @@
     tools:context="edu.rosehulman.manc.crowdtranslate.ProjectInfoActivity">
 
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="false"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentTop="true"
-            android:id="@+id/frameLayout">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentTop="true"
+        android:id="@+id/frameLayout">
 
-            <TableLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal">
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:dividerPadding="5dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize = "17sp"
-                        android:text="@string/label_project"
-                        android:layout_gravity="left"
-                        android:layout_column="0" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize = "17sp"
-                        android:id="@+id/info_project_name"
-                        android:gravity="center_horizontal"
-                        android:layout_column="1"
-                        android:layout_marginLeft="10dp" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:dividerPadding="5dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize = "15sp"
-                        android:text="@string/label_source_lang"
-                        android:layout_gravity="left"
-                        android:layout_column="0" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize = "15sp"
-                        android:id="@+id/info_source_lang"
-                        android:layout_column="1"
-                        android:layout_marginLeft="10dp" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:dividerPadding="5dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize = "15sp"
-                        android:text="@string/label_target_lang"
-                        android:layout_gravity="left"
-                        android:layout_column="0" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize = "15sp"
-                        android:id="@+id/info_target_lang"
-                        android:layout_column="1"
-                        android:layout_marginLeft="10dp" />
-                </TableRow>
-            </TableLayout>
-        </FrameLayout>
-
-        <Button
+        <TableLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/translate_screen_title"
-            android:id="@+id/info_translate_button"
-            android:layout_below="@+id/frameLayout"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="76dp"
-            android:layout_marginBottom="76dp" />
+            android:layout_gravity="center_horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/label_lines"
-            android:layout_above="@+id/listView"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:dividerPadding="5dp">
 
-        <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/listView"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/info_translate_button" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize = "17sp"
+                    android:text="@string/label_project"
+                    android:layout_gravity="left"
+                    android:layout_column="0" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize = "17sp"
+                    android:id="@+id/info_project_name"
+                    android:gravity="center_horizontal"
+                    android:layout_column="1"
+                    android:layout_marginLeft="10dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:dividerPadding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize = "15sp"
+                    android:text="@string/label_source_lang"
+                    android:layout_gravity="left"
+                    android:layout_column="0" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize = "15sp"
+                    android:id="@+id/info_source_lang"
+                    android:layout_column="1"
+                    android:layout_marginLeft="10dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:dividerPadding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize = "15sp"
+                    android:text="@string/label_target_lang"
+                    android:layout_gravity="left"
+                    android:layout_column="0" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize = "15sp"
+                    android:id="@+id/info_target_lang"
+                    android:layout_column="1"
+                    android:layout_marginLeft="10dp" />
+            </TableRow>
+        </TableLayout>
+    </FrameLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/translate_screen_title"
+        android:id="@+id/info_translate_button"
+        android:layout_below="@+id/frameLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="76dp"
+        android:layout_marginBottom="76dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_lines"
+        android:layout_above="@+id/project_info_recycler_view"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/project_info_recycler_view"
+        android:layout_alignParentTop="true"
+        android:layout_below="@+id/info_translate_button" />
 
 </RelativeLayout>

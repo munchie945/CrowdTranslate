@@ -1,0 +1,51 @@
+type Key extends String;
+type Username extends String;
+type Language extends String;
+type Project {
+	name: String,
+	sourceLanguage: Language,
+	destinationLanguage: Language,
+	userKey:Key,
+	tags: Map<Key, Boolean>,
+	lines: Map<Key,Boolean>
+}
+
+type Line {
+	text: String,
+	translations: Map<Key,Boolean>,
+	projectKey: Key
+}
+
+type Tag {
+	tagText: String
+}
+
+type Translation {
+	userKey: Key,
+	lineKey: Key,
+	projectKey: Key
+	votes: Number,
+	translationText: String
+}
+
+type User {
+	username: Username,
+	projects: Map<Key,Boolean>,
+	translations: Map<Key,Boolean>
+	languages: Map<Language,Boolean>,
+	tags:Map<Key,Boolean>
+}
+
+path /users/{user} is User;
+path /projects/{project} is Project;
+path /lines/{line} is Line;
+path /translations/{translation} is Translation;
+path /tags/{tag} is Tag;
+
+path / {
+	read() { auth != null; }
+	write() { auth != null; }
+}
+
+
+
