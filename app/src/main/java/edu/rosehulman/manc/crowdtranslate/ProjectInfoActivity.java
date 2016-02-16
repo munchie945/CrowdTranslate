@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import edu.rosehulman.manc.crowdtranslate.adapters.ProjectInfoAdapter;
+import edu.rosehulman.manc.crowdtranslate.model.Line;
 import edu.rosehulman.manc.crowdtranslate.model.Project;
 
 public class ProjectInfoActivity extends AppCompatActivity {
@@ -19,6 +20,8 @@ public class ProjectInfoActivity extends AppCompatActivity {
     private int mPosition;
     private Button mTranslate;
     private ProjectInfoAdapter mAdapter;
+    public static final String EXTRA_LINE_KEY = "line";
+    public static final int REQUEST_TRANSLATE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,14 @@ public class ProjectInfoActivity extends AppCompatActivity {
 
     private void translateLine(View v, Project project) {
         //TODO:
+    }
+
+    public void displayTranslate(Line line, int position){
+        Intent intent = new Intent(this, TranslateActivity.class);
+        Line lineToTranslate = mProject.getLine(position);
+        intent.putExtra(EXTRA_LINE_KEY, lineToTranslate);
+        startActivityForResult(intent, REQUEST_TRANSLATE);
+//        context.start.startActivity(intent);
     }
 
     @Override

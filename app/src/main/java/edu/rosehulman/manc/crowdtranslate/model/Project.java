@@ -112,6 +112,10 @@ public class Project implements Parcelable{
     public String getLineKey(int position){
         return lines.get(position).getKey();
     }
+    public Line getLine(int position){
+        return lines.get(position);
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
