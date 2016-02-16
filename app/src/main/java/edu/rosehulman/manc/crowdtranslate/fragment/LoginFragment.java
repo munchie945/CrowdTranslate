@@ -1,13 +1,23 @@
 package edu.rosehulman.manc.crowdtranslate.fragment;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
+import com.firebase.client.AuthData;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+
+import edu.rosehulman.manc.crowdtranslate.Constants;
+import edu.rosehulman.manc.crowdtranslate.OnLoginListener;
 import edu.rosehulman.manc.crowdtranslate.R;
 
 
@@ -60,6 +70,39 @@ public class LoginFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Activity parentActivity = getActivity();
+        Firebase.setAndroidContext(getActivity());
+        final OnLoginListener loginListener = (OnLoginListener) parentActivity;
+
+        final Firebase baseRef = new Firebase(Constants.BASE_FIREBASE_URL);
+        final EditText emailEditText = (EditText) view.findViewById(R.id.login_email_edit_text);
+        final EditText passwordEditText = (EditText) view.findViewById(R.id.login_password_edit_text);
+        Button loginButton = (Button) view.findViewById(R.id.login_submit_button);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = emailEditText.getText().toString();
+                String password = passwordEditText.getText().toString();
+                baseRef.authWithPassword(email, password, new Firebase.AuthResultHandler() {
+                    @Override
+                    public void onAuthenticated(AuthData authData) {
+                        Log.i("LoginFragment", "Logged in user with Uid " + authData.getUid());
+                        loginListener.onLogin(authData.getUid());
+                    }
+
+                    @Override
+                    public void onAuthenticationError(FirebaseError firebaseError) {
+                        // TODO replace with actual error
+                        Log.e("LoginFragment", "Authentication error happened: " + firebaseError.getMessage());
+                    }
+                });
+            }
+        });
     }
 
     @Override
