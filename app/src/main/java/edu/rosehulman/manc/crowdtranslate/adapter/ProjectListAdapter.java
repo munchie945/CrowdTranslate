@@ -9,6 +9,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import edu.rosehulman.manc.crowdtranslate.BrowseProjectsActivity;
+import edu.rosehulman.manc.crowdtranslate.ManageProjectsActivity;
 import edu.rosehulman.manc.crowdtranslate.R;
 import edu.rosehulman.manc.crowdtranslate.model.Project;
 
@@ -19,9 +20,9 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
     private final ArrayList<Project> mProjectList;
 
-    private BrowseProjectsActivity mContext;
+    private Object mContext;
 
-    public ProjectListAdapter(ArrayList<Project> projectList, BrowseProjectsActivity context){
+    public ProjectListAdapter(ArrayList<Project> projectList, Object context){
         mContext = context;
         mProjectList = projectList;
     }
@@ -43,7 +44,13 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mContext.displayInfo(project, position);
+                if (mContext instanceof BrowseProjectsActivity) {
+                    ((BrowseProjectsActivity) mContext).displayInfo(project, position);
+
+                } else if (mContext instanceof ManageProjectsActivity){
+                    ((ManageProjectsActivity) mContext).displayInfo(project, position);
+
+                }
 
             }
         });
