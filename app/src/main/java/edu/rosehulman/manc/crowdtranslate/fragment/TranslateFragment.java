@@ -1,5 +1,6 @@
 package edu.rosehulman.manc.crowdtranslate.fragment;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
@@ -7,7 +8,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -40,7 +45,10 @@ public class TranslateFragment extends Fragment {
     private String mLineKey;
     private TranslateAdapter mAdapter;
 
+    private Activity mParentActivity;
     private OnTranslateFragmentListener mListener;
+    private TextView mOriginalLineView;
+    private RecyclerView mRecyclerView;
 
     public TranslateFragment() {
         // Required empty public constructor
@@ -65,8 +73,17 @@ public class TranslateFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
         if (getArguments() != null) {
             mLineKey = getArguments().getString(LINE_KEY_KEY);
+        }
+        if (mParentActivity != null){
+            ActionBar toolbar = getActivity().getActionBar();
+            if (toolbar != null){
+                toolbar.setTitle("Translate");
+            }
+
         }
     }
 
@@ -81,27 +98,9 @@ public class TranslateFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Set the original text string
-        final TextView originalLineView = (TextView) view.findViewById(R.id.translate_line_text_view);
-        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.translate_recycler_view);
-
-        new Firebase(Constants.LINE_PATH).child(mLineKey).addListenerForSingleValueEvent(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Line currLine = dataSnapshot.getValue(Line.class);
-                currLine.setKey(dataSnapshot.getKey());
-                originalLineView.setText(currLine.getText());
-
-                mAdapter = new TranslateAdapter(currLine);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                recyclerView.setAdapter(mAdapter);
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                Utils.makeToast(TranslateFragment.this, "A problem occurred when signing you win. Please try again!");
-            }
-        });
+        mOriginalLineView = (TextView) view.findViewById(R.id.translate_line_text_view);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.translate_recycler_view);
+        populateData();
     }
 
     @Override
@@ -113,7 +112,31 @@ public class TranslateFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        mParentActivity = activity;
         actionsOnAttach(activity);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Since there is only one item, "Next Translation"
+        Log.i(LOG_TAG, "Translate fragment requesting new line from parentActivity");
+        mLineKey = mListener.requestNewLine();
+        populateData();
+        return true;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        MenuItem nextTranslation = menu.add("Next");
+        nextTranslation.setIcon(R.drawable.ic_arrow_forward_black_24dp);
+        nextTranslation.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
     }
 
     private void actionsOnAttach(Context context){
@@ -125,14 +148,27 @@ public class TranslateFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
+    /**
+     * Populate line and translation data based on current lineKey
+     */
+    private void populateData() {
+        new Firebase(Constants.LINE_PATH).child(mLineKey).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Line currLine = dataSnapshot.getValue(Line.class);
+                currLine.setKey(dataSnapshot.getKey());
+                mOriginalLineView.setText(currLine.getText());
 
-    public void updateOnNewLine(){
-        // TODO: Implement updating on new line
+                mAdapter = new TranslateAdapter(currLine);
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                mRecyclerView.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Utils.makeToast(TranslateFragment.this, "A problem occurred when signing you win. Please try again!");
+            }
+        });
     }
 
     /**
@@ -147,6 +183,9 @@ public class TranslateFragment extends Fragment {
      */
     public interface OnTranslateFragmentListener {
 
-        void requestNewLine();
+        /**
+         * @return key of new line to be translated
+         */
+        String requestNewLine();
     }
 }

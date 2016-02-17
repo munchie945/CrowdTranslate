@@ -159,7 +159,8 @@ public class LandingActivity extends AppCompatActivity
     }
 
     @Override
-    public void requestNewLine() {
-        // TODO: when next button is pressed on Translate
+    public String requestNewLine() {
+        Line newLine = mProjectMatcher.getNewLine();
+        return newLine.getKey();
     }
 }

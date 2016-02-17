@@ -25,26 +25,40 @@ import edu.rosehulman.manc.crowdtranslate.model.User;
  */
 public class RelevanceProjectMatcher implements IProjectMatcher {
 
-    private static final int NUM_PROJECTS = 10;
-
     private User user;
     private Firebase baseRef;
     private ArrayList<Project> projectList = new ArrayList<>();
 
+    // Last lines and projects returned
+    private int lastLineInd;
+    private int lastProjectInd;
+
     public RelevanceProjectMatcher(User user){
+        lastLineInd = 0;
+        lastProjectInd = 0;
+
         this.user = user;
         this.baseRef = new Firebase(Constants.BASE_FIREBASE_URL);
         Firebase projectRef = baseRef.child(Constants.PROJECT_KEY);
-
-        projectRef.limitToFirst(NUM_PROJECTS)
-                .addListenerForSingleValueEvent(new ProjectValueListener());
+        projectRef.addListenerForSingleValueEvent(new ProjectValueListener());
     }
 
     @Override
     // TODO: Throw error if no line?
     public Line getNewLine() {
-        Project chosenProject = projectList.get(0);
-        return chosenProject.getLines().get(0);
+        Project project = projectList.get(lastProjectInd);
+        ArrayList<Line> currLines = project.getLines();
+        lastLineInd++;
+        if (lastLineInd < currLines.size()){
+            return currLines.get(lastLineInd);
+        } else {
+            lastLineInd = 0;
+            lastProjectInd++;
+
+            // TODO: THIS WILL THROW ERROR IF LAST PROJECT IS REACHED
+            Project newProject = projectList.get(lastProjectInd);
+            return newProject.getLines().get(lastLineInd);
+        }
     }
 
     @Override
