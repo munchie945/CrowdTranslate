@@ -123,13 +123,13 @@ public class TranslateAdapter extends RecyclerView.Adapter<TranslateAdapter.Tran
                     LayoutInflater layoutInflater = LayoutInflater.from(context);
                     View dialogView = layoutInflater.inflate(R.layout.dialog_submit_translation, null);
 
-                    // TODO: remove from layout
-                    TextView lineView = (TextView) dialogView.findViewById(R.id.translate_dialog_original_line_text_view);
-                    lineView.setText("Testing");
+                    // setting the text of EditText to the selected line
+                    EditText editText = (EditText) dialogView.findViewById(R.id.translate_dialog_edit_text);
+                    editText.setText(translationLineTextView.getText());
 
                     final EditText inputTranslation = (EditText) dialogView.findViewById(R.id.translate_dialog_edit_text);
                     // Setting the message of the dialog box
-                    builder.setTitle("Translate")
+                    builder.setTitle("Translate this:")
                             .setMessage(mOriginalLine.getText())
                             .setView(dialogView)
                             .setPositiveButton("Submit", new DialogInterface.OnClickListener() {

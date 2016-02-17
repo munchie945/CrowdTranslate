@@ -5,12 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/translate_dialog_original_line_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/default_string"/>
-
     <EditText
         android:id="@+id/translate_dialog_edit_text"
         android:layout_width="match_parent"
