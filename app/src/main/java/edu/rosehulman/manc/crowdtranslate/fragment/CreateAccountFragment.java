@@ -1,5 +1,6 @@
 package edu.rosehulman.manc.crowdtranslate.fragment;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.net.Uri;
@@ -30,11 +31,12 @@ import java.util.ArrayList;
 
 import edu.rosehulman.manc.crowdtranslate.Constants;
 import edu.rosehulman.manc.crowdtranslate.R;
+import edu.rosehulman.manc.crowdtranslate.Utils;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link CreateAccountFragment.OnFragmentInteractionListener} interface
+ * {@link OnCreateAccountFragmentListener} interface
  * to handle interaction events.
  * Use the {@link CreateAccountFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -42,15 +44,17 @@ import edu.rosehulman.manc.crowdtranslate.R;
 public class CreateAccountFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String USER_UID_KEY = "userUid";
+    private static final String LOG_TAG = "CreateAccount";
+
+    private Context mContext;
+    private OnCreateAccountFragmentListener mFragmentListener;
 
     private String mUserUid;
     private Firebase mLanguagesRef;
     private Firebase mTagsRef;
-    private OnFragmentInteractionListener mListener;
 
     private ArrayAdapter<String> mLanguageAdapter;
-    private ArrayAdapter<String> tagAdapter;
-
+    private ArrayAdapter<String> mTagAdapter;
 
     public CreateAccountFragment() {
         // Required empty public constructor
@@ -108,7 +112,12 @@ public class CreateAccountFragment extends Fragment {
         // get all items from languageAdapter
         ArrayList<String> languages = adapterToArrayList(mLanguageAdapter);
         mLanguagesRef.setValue(languages);
+
+        ArrayList<String> tags = adapterToArrayList(mTagAdapter);
+        mTagsRef.setValue(tags);
+
         Log.i("AccountCreation", "Successfully updated user preferences");
+        mFragmentListener.onSettingsChanged(mUserUid);
         return true;
     }
 
@@ -128,7 +137,9 @@ public class CreateAccountFragment extends Fragment {
         AutoCompleteTextView addTagEditText = (AutoCompleteTextView) view.findViewById(R.id.preference_tag_autocomplete_text);
 
         attachLanguageAdapter(languageListView);
+        attachTagAdapter(tagListView);
         attachAddLanguageListener(addLanguageEditText);
+        attachAddTagListener(addTagEditText);
     }
 
     private void attachLanguageAdapter(ListView languageListView){
@@ -148,8 +159,31 @@ public class CreateAccountFragment extends Fragment {
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-                // TODO: Add error handling
+                Utils.makeToast(CreateAccountFragment.this, "Sorry, we couldn't load your information");
+                Log.e(LOG_TAG, "Firebase error when retrieving user languages: " + firebaseError.getMessage());
             }
+        });
+    }
+
+    private void attachTagAdapter(ListView tagListView){
+        mTagAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1);
+        tagListView.setAdapter(mTagAdapter);
+
+        mTagsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("AccountCreation", "Fetching data from " + mTagsRef.getPath());
+                ArrayList<String> tags = (ArrayList<String>) dataSnapshot.getValue();
+                if (tags != null) {
+                    // If it's a new account, this would be null
+                    mLanguageAdapter.addAll(tags);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Utils.makeToast(CreateAccountFragment.this, "Sorry, we couldn't load your information");
+                Log.e(LOG_TAG, "Firebase error when retrieving user tags: " + firebaseError.getMessage());            }
         });
     }
 
@@ -157,11 +191,26 @@ public class CreateAccountFragment extends Fragment {
         addLanguageView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                Log.d("CreateAccount", "Key press event with actionId " + actionId);
+                Log.d(LOG_TAG, "Add Language Edit Text: Key press event with actionId " + actionId);
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     // enter key is pressed
                     mLanguageAdapter.add(v.getText().toString());
                     addLanguageView.setText("");
+                }
+                return true;
+            }
+        });
+    }
+
+    private void attachAddTagListener(final EditText addTagView){
+        addTagView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                Log.d(LOG_TAG, "Add Tag Edit Text: Key press event with actionId " + actionId);
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    // enter key is pressed
+                    mTagAdapter.add(v.getText().toString());
+                    addTagView.setText("");
                 }
                 return true;
             }
@@ -175,28 +224,32 @@ public class CreateAccountFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_create_account, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+        saveContextOnAttach(context);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        saveContextOnAttach(activity);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        mFragmentListener = null;
+    }
+
+    private void saveContextOnAttach(Context context){
+        if (context instanceof OnCreateAccountFragmentListener) {
+            mContext = context;
+            mFragmentListener = (OnCreateAccountFragmentListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnLoginFragmentListener");
+        }
     }
 
     /**
@@ -204,13 +257,8 @@ public class CreateAccountFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    public interface OnCreateAccountFragmentListener {
+        void onSettingsChanged(String userUid);
     }
 }

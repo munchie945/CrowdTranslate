@@ -8,16 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
-import edu.rosehulman.manc.crowdtranslate.adapters.TranslateAdapter;
-import edu.rosehulman.manc.crowdtranslate.fragment.LandingScreenFragment;
+import edu.rosehulman.manc.crowdtranslate.activity.LandingActivity;
+import edu.rosehulman.manc.crowdtranslate.adapter.TranslateAdapter;
 import edu.rosehulman.manc.crowdtranslate.model.Line;
-import edu.rosehulman.manc.crowdtranslate.model.Translation;
 
 public class TranslateActivity extends AppCompatActivity {
 
@@ -41,7 +37,7 @@ public class TranslateActivity extends AppCompatActivity {
 
         // get extras
         Intent intent = getIntent();
-        Line line = intent.getParcelableExtra(LandingScreenFragment.EXTRA_LINE_KEY);
+        Line line = intent.getParcelableExtra(LandingActivity.EXTRA_LINE_KEY);
         String textString = line.getText();
 
         // Set the original text string

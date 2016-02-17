@@ -1,4 +1,4 @@
-package edu.rosehulman.manc.crowdtranslate.adapters;
+package edu.rosehulman.manc.crowdtranslate.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

@@ -1,4 +1,4 @@
-package edu.rosehulman.manc.crowdtranslate.adapters;
+package edu.rosehulman.manc.crowdtranslate.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,7 +17,6 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.Query;
 
 import java.util.ArrayList;
 

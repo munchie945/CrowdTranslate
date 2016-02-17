@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import edu.rosehulman.manc.crowdtranslate.adapters.ProjectInfoAdapter;
+import edu.rosehulman.manc.crowdtranslate.adapter.ProjectInfoAdapter;
 import edu.rosehulman.manc.crowdtranslate.model.Line;
 import edu.rosehulman.manc.crowdtranslate.model.Project;
 

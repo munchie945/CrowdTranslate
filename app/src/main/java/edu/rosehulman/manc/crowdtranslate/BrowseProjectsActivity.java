@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Locale;
 
-import edu.rosehulman.manc.crowdtranslate.adapters.ProjectListAdapter;
-import edu.rosehulman.manc.crowdtranslate.fragment.LandingScreenFragment;
+import edu.rosehulman.manc.crowdtranslate.activity.LandingActivity;
+import edu.rosehulman.manc.crowdtranslate.adapter.ProjectListAdapter;
 import edu.rosehulman.manc.crowdtranslate.model.Project;
 
 public class BrowseProjectsActivity extends AppCompatActivity {
@@ -49,7 +49,7 @@ public class BrowseProjectsActivity extends AppCompatActivity {
             }
         });
 
-        ArrayList<Project> projectList = getIntent().getParcelableArrayListExtra(LandingScreenFragment.EXTRA_PROJECTS_KEY);
+        ArrayList<Project> projectList = getIntent().getParcelableArrayListExtra(LandingActivity.EXTRA_PROJECTS_KEY);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.browse_projects_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

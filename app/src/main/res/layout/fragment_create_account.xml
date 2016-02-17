@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:inputType="text"
         android:singleLine="true"
-        android:imeOptions="actionDone"
+        android:imeActionId="6"
         android:imeActionLabel="Add"
         android:hint="@string/preference_add_interest_prompt" />
 
