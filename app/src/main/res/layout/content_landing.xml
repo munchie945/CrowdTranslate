@@ -1,52 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    tools:context="edu.rosehulman.manc.crowdtranslate.activity.LandingActivity"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:showIn="@layout/app_bar_landing"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="edu.rosehulman.manc.crowdtranslate.activity.LandingActivity"
-    android:layout_width="match_parent"
+    android:id="@+id/landing_screen_container"
     android:layout_height="match_parent"
-    android:padding="10dp"
-    android:orientation="vertical"
-    tools:showIn="@layout/app_bar_landing">
+    android:layout_width="match_parent">
+</FrameLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/app_title"
-        android:textSize="40sp"
-        android:textStyle="bold" />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="41dp"
-        android:src="@android:drawable/ic_menu_info_details"
-        android:layout_weight="0.31" />
-
-    <Button
-        android:id="@+id/translate_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/translate_screen_title" />
-
-    <Button
-        android:id="@+id/profile_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/profile_screen_title" />
-
-    <Button
-        android:id="@+id/start_projects_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/start_project_screen_title"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:id="@+id/browse_projects_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/browse_projects" />
-
-</LinearLayout>

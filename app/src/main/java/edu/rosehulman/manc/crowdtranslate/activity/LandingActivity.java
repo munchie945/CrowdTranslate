@@ -2,10 +2,10 @@ package edu.rosehulman.manc.crowdtranslate.activity;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,28 +13,24 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.Button;
+
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-import java.util.ArrayList;
-
-import edu.rosehulman.manc.crowdtranslate.BrowseProjectsActivity;
 import edu.rosehulman.manc.crowdtranslate.Constants;
 import edu.rosehulman.manc.crowdtranslate.R;
-import edu.rosehulman.manc.crowdtranslate.TranslateActivity;
-import edu.rosehulman.manc.crowdtranslate.fragment.CreateAccountFragment;
+import edu.rosehulman.manc.crowdtranslate.fragment.LandingFragment;
+import edu.rosehulman.manc.crowdtranslate.fragment.TranslateFragment;
 import edu.rosehulman.manc.crowdtranslate.model.Line;
-import edu.rosehulman.manc.crowdtranslate.model.Project;
 import edu.rosehulman.manc.crowdtranslate.model.User;
 import edu.rosehulman.manc.crowdtranslate.projectMatcher.IProjectMatcher;
 import edu.rosehulman.manc.crowdtranslate.projectMatcher.RelevanceProjectMatcher;
 
 public class LandingActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, LandingFragment.OnLandingFragmentListener, TranslateFragment.OnTranslateFragmentListener{
 
     public static final String LANDING_INTENT_USER_UID_KEY = "userUid";
     public static final String EXTRA_LINE_KEY = "line";
@@ -42,24 +38,32 @@ public class LandingActivity extends AppCompatActivity
 
     private static final String LOG_TAG = "LandingActivity";
 
-    private String mUserUid;
+    private User mUser;
     private IProjectMatcher mProjectMatcher;
+    private FragmentManager mFragmentManager;
+
+    private Fragment mLandingFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // get userUid
-        mUserUid = getIntent().getStringExtra(LANDING_INTENT_USER_UID_KEY);
-        new Firebase(Constants.USER_PATH).child(mUserUid)
+        // get userUid, then get user information, switch to Landing fragment
+        String userUid = getIntent().getStringExtra(LANDING_INTENT_USER_UID_KEY);
+        new Firebase(Constants.USER_PATH).child(userUid)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        User user = dataSnapshot.getValue(User.class);
-                        user.setKey(dataSnapshot.getKey());
-                        mProjectMatcher = new RelevanceProjectMatcher(user);
-                        Log.i(LOG_TAG, "Retrieved data on User with uid: " + user.getKey()
-                                + " and username: " + user.getUsername());
+                        mUser = dataSnapshot.getValue(User.class);
+                        mUser.setKey(dataSnapshot.getKey());
+                        mProjectMatcher = new RelevanceProjectMatcher(mUser);
+
+                        // set up Landing fragment
+                        Fragment mLandingFragment = LandingFragment.newInstance(mUser.getUsername());
+                        switchToFragment(mLandingFragment, "LANDING");
+
+                        Log.i(LOG_TAG, "Retrieved data on user with uid: " + mUser.getKey()
+                                + " and username: " + mUser.getUsername());
                     }
 
                     @Override
@@ -82,37 +86,16 @@ public class LandingActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Button browseProjectsButton = (Button) findViewById(R.id.browse_projects_button);
-        browseProjectsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LandingActivity.this, BrowseProjectsActivity.class);
-                ArrayList<Project> projects = mProjectMatcher.getProjects(10);
-                intent.putParcelableArrayListExtra(EXTRA_PROJECTS_KEY, projects);
-                startActivity(intent);
-            }
-        });
-
-        Button translateButton = (Button) findViewById(R.id.translate_button);
-        translateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LandingActivity.this, TranslateActivity.class);
-                Line lineToTranslate = mProjectMatcher.getNewLine();
-                intent.putExtra(EXTRA_LINE_KEY, lineToTranslate);
-                startActivity(intent);
-            }
-        });
-
-        Button profileButton = (Button) findViewById(R.id.profile_button);
-        profileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: Finish this to get to preferences page
-                FragmentManager fragmentManager = getFragmentManager();
-                Fragment managePreferencesFragment = CreateAccountFragment.newInstance(mUserUid);
-            }
-        });
+//        Button browseProjectsButton = (Button) findViewById(R.id.browse_projects_button);
+//        browseProjectsButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(LandingActivity.this, BrowseProjectsActivity.class);
+//                ArrayList<Project> projects = mProjectMatcher.getProjects(10);
+//                intent.putParcelableArrayListExtra(EXTRA_PROJECTS_KEY, projects);
+//                startActivity(intent);
+//            }
+//        });
     }
 
     @Override
@@ -148,5 +131,35 @@ public class LandingActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onTranslateButtonPress() {
+        Line newLine = mProjectMatcher.getNewLine();
+        TranslateFragment translateFragment = TranslateFragment.newInstance(newLine.getKey());
+        switchToFragment(translateFragment, "TRANSLATE");
+    }
+
+    @Override
+    public void onStartProjectButtonPress() {
+        // TODO: Start a new project
+    }
+
+    @Override
+    public void onBackButtonPress() {
+        // TODO: when back button on Translate is pressed
+    }
+
+    private void switchToFragment(Fragment fragment, String tag){
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.landing_screen_container, fragment)
+                .addToBackStack(tag)
+                .commit();
+    }
+
+    @Override
+    public void requestNewLine() {
+        // TODO: when next button is pressed on Translate
     }
 }
