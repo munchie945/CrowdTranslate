@@ -80,14 +80,6 @@ public class LandingFragment extends Fragment {
         String welcomeString = getResources().getString(R.string.welcome_format_string, mUsername);
         headerTextView.setText(welcomeString);
 
-        Button browseProjectsButton = (Button) view.findViewById(R.id.browse_projects_button);
-        browseProjectsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: DELETE BUTTON OR DO SOMETHING
-            }
-        });
-
         Button translateButton = (Button) view.findViewById(R.id.translate_button);
         translateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,13 +88,14 @@ public class LandingFragment extends Fragment {
             }
         });
 
-        Button profileButton = (Button) view.findViewById(R.id.profile_button);
-        profileButton.setOnClickListener(new View.OnClickListener() {
+        Button startProjectButton = (Button) view.findViewById(R.id.start_projects_button);
+        startProjectButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {// TODO: DELETE BUTTON OR DO SOMETHING
-
+            public void onClick(View v) {
+                mListener.onStartProjectButtonPress();
             }
         });
+
     }
 
     @Override

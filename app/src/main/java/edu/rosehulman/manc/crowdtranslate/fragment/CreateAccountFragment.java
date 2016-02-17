@@ -111,13 +111,18 @@ public class CreateAccountFragment extends Fragment {
         // since there is only one item
         // get all items from languageAdapter
         ArrayList<String> languages = adapterToArrayList(mLanguageAdapter);
-        mLanguagesRef.setValue(languages);
-
         ArrayList<String> tags = adapterToArrayList(mTagAdapter);
-        mTagsRef.setValue(tags);
 
-        Log.i("AccountCreation", "Successfully updated user preferences");
-        mFragmentListener.onSettingsChanged(mUserUid);
+        if (languages.isEmpty()) {
+            Utils.makeToast(this, "Sorry, we need at least one language from you! Add a language, and try again.");
+        } else if (tags.isEmpty()) {
+            Utils.makeToast(this, "Sorry, we need at least one interest from you! Add an interest, and try again.");
+        } else {
+            mLanguagesRef.setValue(languages);
+            mTagsRef.setValue(tags);
+            Log.i("AccountCreation", "Successfully updated user preferences");
+            mFragmentListener.onSettingsChanged(mUserUid);
+        }
         return true;
     }
 
