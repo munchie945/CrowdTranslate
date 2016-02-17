@@ -21,7 +21,11 @@
 
     <!-- For the actionId, see EditorInfo IME Options -->
     <AutoCompleteTextView
+        android:scrollIndicators="left"
+
         android:id="@+id/preference_language_autocomplete_text"
+        android:completionThreshold="1"
+        android:elegantTextHeight="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"

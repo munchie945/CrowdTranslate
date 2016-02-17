@@ -3,7 +3,6 @@ package edu.rosehulman.manc.crowdtranslate.fragment;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +27,8 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Locale;
 
 import edu.rosehulman.manc.crowdtranslate.Constants;
 import edu.rosehulman.manc.crowdtranslate.R;
@@ -141,13 +142,32 @@ public class CreateAccountFragment extends Fragment {
         AutoCompleteTextView addLanguageEditText = (AutoCompleteTextView) view.findViewById(R.id.preference_language_autocomplete_text);
         AutoCompleteTextView addTagEditText = (AutoCompleteTextView) view.findViewById(R.id.preference_tag_autocomplete_text);
 
+
         attachLanguageAdapter(languageListView);
         attachTagAdapter(tagListView);
+//        attachAddLanguageListener(addLanguageEditText);
+        Locale[] locales = Locale.getAvailableLocales();
+        ArrayList<String> langName = new ArrayList<String>();
+        for(Locale l:locales){
+            if(!langName.contains(l.getDisplayLanguage()))
+                langName.add(l.getDisplayLanguage());
+
+        }
+        ArrayAdapter<String> lang = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line,langName);
+        lang.sort(new Comparator<String>() {
+
+            @Override
+            public int compare(String lhs, String rhs) {
+                return lhs.compareToIgnoreCase(rhs);
+            }
+        });
+        addLanguageEditText.setAdapter(lang);
         attachAddLanguageListener(addLanguageEditText);
         attachAddTagListener(addTagEditText);
     }
 
     private void attachLanguageAdapter(ListView languageListView){
+
         mLanguageAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1);
         languageListView.setAdapter(mLanguageAdapter);
 

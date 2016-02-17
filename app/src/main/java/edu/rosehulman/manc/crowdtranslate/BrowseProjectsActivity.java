@@ -71,7 +71,10 @@ public class BrowseProjectsActivity extends AppCompatActivity {
                 Locale[] locales = Locale.getAvailableLocales();
                 ArrayList<String> langName = new ArrayList<String>();
                 for(Locale l:locales){
-                    langName.add(l.getDisplayName());
+//                    langName.add(l.getDisplayName());
+                    if(!langName.contains(l.getDisplayLanguage()))
+                        langName.add(l.getDisplayLanguage());
+
                 }
                 ArrayAdapter<String> lang = new ArrayAdapter<String>(getContext(), android.R.layout.simple_dropdown_item_1line,langName);
                 lang.sort(new Comparator<String>() {
